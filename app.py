@@ -10,26 +10,35 @@ def carregar_imagem():
         return uploaded_file, img
     return None, None
 
-# Função para definir a área de interesse
-def selecionar_area(imagem):
+# Função para selecionar áreas com checkboxes
+def selecionar_area_com_checkbox(imagem):
     if imagem:
         st.sidebar.header("Seleção da área de interesse")
         
         # Ajustar coordenadas e tamanho da caixa
         width, height = imagem.size
 
-        x1 = st.sidebar.slider("Posição X inicial", 0, width, 50)
-        y1 = st.sidebar.slider("Posição Y inicial", 0, height, 50)
-        x2 = st.sidebar.slider("Posição X final", x1, width, x1 + 100)
-        y2 = st.sidebar.slider("Posição Y final", y1, height, y1 + 100)
-
-        # Exibe os valores de coordenadas
-        st.sidebar.write(f"Área selecionada: ({x1}, {y1}) -> ({x2}, {y2})")
-
-        # Desenha a área sobre a imagem
-        st.image(imagem.crop((x1, y1, x2, y2)), caption="Área selecionada", use_column_width=True)
+        # Definir algumas áreas de exemplo para o usuário escolher
+        areas = [
+            {"nome": "Canto Superior Esquerdo", "x1": 0, "y1": 0, "x2": 150, "y2": 150},
+            {"nome": "Centro Superior", "x1": width//3, "y1": 0, "x2": width//3*2, "y2": 150},
+            {"nome": "Canto Inferior Direito", "x1": width-150, "y1": height-150, "x2": width, "y2": height},
+            {"nome": "Centro Inferior", "x1": width//3, "y1": height//3*2, "x2": width//3*2, "y2": height},
+        ]
         
-        return (x1, y1, x2, y2)
+        selected_areas = []
+        
+        for area in areas:
+            if st.sidebar.checkbox(area["nome"]):
+                selected_areas.append(area)
+        
+        # Se alguma área for selecionada, desenha as áreas na imagem
+        if selected_areas:
+            for area in selected_areas:
+                imagem_crop = imagem.crop((area["x1"], area["y1"], area["x2"], area["y2"]))
+                st.image(imagem_crop, caption=f"{area['nome']} selecionada", use_column_width=True)
+                
+        return selected_areas
     return None
 
 # Função para iniciar a análise
@@ -45,10 +54,10 @@ def main():
 
     imagem, img_obj = carregar_imagem()
     if imagem:
-        area = selecionar_area(img_obj)
+        areas_selecionadas = selecionar_area_com_checkbox(img_obj)
 
         if st.button("Iniciar Análise"):
-            iniciar_analise(area)
+            iniciar_analise(areas_selecionadas)
 
 if __name__ == "__main__":
     main()
