@@ -1,94 +1,50 @@
 import streamlit as st
-from PIL import Image
 
-from streamlit_image_coordinates import streamlit_image_coordinates
+# Função para carregar a imagem
+def carregar_imagem():
+    uploaded_file = st.file_uploader("Carregue uma imagem", type=["png", "jpg", "jpeg"])
+    if uploaded_file is not None:
+        st.image(uploaded_file, caption="Imagem carregada", use_column_width=True)
+        return uploaded_file
+    return None
 
-st.set_page_config(
-    page_title="Streamlit Image Coordinates",
-    page_icon="🎯",
-    layout="wide",
-)
+# Função para iniciar a análise
+def iniciar_analise(imagem):
+    # Aqui, você pode adicionar a chamada para o modelo de IA quando estiver pronto
+    if imagem is not None:
+        st.success("Análise em andamento...")
+        # Exemplo de uma simulação de análise, você pode substituir pela análise real.
+        st.write("Resultado da análise: Nenhuma anomalia detectada.")
+        return True
+    else:
+        st.warning("Por favor, carregue uma imagem antes de iniciar a análise.")
+        return False
 
-"# :dart: Streamlit Image Coordinates"
+# Pontuação e feedback
+def atualizar_pontuacao(pontos):
+    st.sidebar.header("Sua Pontuação")
+    st.sidebar.write(f"Pontos: {pontos}")
 
-st.code("pip install streamlit-image-coordinates")
+def main():
+    st.title("Sistema de Apoio ao Diagnóstico - Gamificado")
 
-"Try clicking on any of the images below."
+    pontos = 0  # Inicializando a pontuação
 
-col1, col2, col3, col4 = st.columns(4)
+    imagem = carregar_imagem()
 
-with col1:
-    st.write("## Url example")
+    if imagem:
+        if st.button("Iniciar Análise"):
+            if iniciar_analise(imagem):
+                pontos += 10  # Incrementa pontos após análise bem-sucedida
 
-    with st.echo("below"):
-        value = streamlit_image_coordinates(
-            "https://placecats.com/200/300",
-            key="url",
-        )
+    # Exibe a pontuação
+    atualizar_pontuacao(pontos)
 
-        st.write(value)
+    # Mensagem motivacional
+    if pontos > 0:
+        st.success(f"Parabéns! Você ganhou {pontos} pontos!")
+    else:
+        st.info("Carregue uma imagem para começar a análise e ganhar pontos!")
 
-with col2:
-    st.write("## Local image example")
-
-    with st.echo("below"):
-        value = streamlit_image_coordinates(
-            "kitty.jpeg",
-            key="local",
-        )
-
-        st.write(value)
-
-with col3:
-    st.write("## Custom size example")
-
-    with st.echo("below"):
-        value = streamlit_image_coordinates(
-            "kitty.jpeg",
-            width=250,
-            key="local2",
-        )
-
-        st.write(value)
-
-with col4:
-    st.write("## PIL example")
-
-    with st.echo("below"):
-        value = streamlit_image_coordinates(
-            Image.open("kitty.jpeg"),
-            key="pil",
-        )
-
-        st.write(value)
-
-st.write("## Cursor style example")
-
-cursor_style = st.radio(
-    "Choose cursor style:",
-    ["auto", "crosshair", "pointer", "zoom-in"],
-    index=1,
-    horizontal=True,
-)
-
-with st.echo("below"):
-    value = streamlit_image_coordinates(
-        "kitty.jpeg",
-        key=f"cursor_{cursor_style}",
-        width=300,
-        cursor=cursor_style,
-    )
-
-    st.write(value)
-
-st.write("## Full width example with click and drag")
-
-with st.echo("below"):
-    value = streamlit_image_coordinates(
-        "kitty.jpeg",
-        key="local4",
-        use_column_width="always",
-        click_and_drag=True,
-    )
-
-    st.write(value)
+if __name__ == "__main__":
+    main()
