@@ -1,4 +1,16 @@
+# Streamlit para o app
 streamlit
-streamlit-drawable-canvas
+
+# Canvas desenhável
+git+https://github.com/andfanilo/streamlit-drawable-canvas.git
+
+# Trabalhar com imagens
 Pillow
 streamlit-image-coordinates
+opencv-python-headless
+numpy
+
+# Para rodar seu modelo YOLOv8
+ultralytics
+torch
+torchvision
