@@ -1,6 +1,6 @@
 import streamlit as st
 from PIL import Image, ImageDraw
-import streamlit_image_coordinates
+from streamlit_image_coordinates import streamlit_image_coordinates
 
 # Inicializa coordenadas na sessão
 if "coordinates" not in st.session_state:
