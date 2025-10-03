@@ -4,6 +4,11 @@ Pillow
 streamlit-image-coordinates
 opencv-python-headless
 numpy
-torch
-torchvision
+
+# PyTorch oficial
+torch==2.2.0+cpu
+torchvision==0.17.1+cpu
+-f https://download.pytorch.org/whl/torch_stable.html
+
+# YOLOv8
 ultralytics
