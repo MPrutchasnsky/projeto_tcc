@@ -1,1 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Início - Diagnóstico Gamificado</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='static_style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Sistema de Apoio ao Diagnóstico</h1>
+        <p>Carregue uma imagem para análise com IA</p>
+    </header>
 
+    <div class="container">
+        <a href="{{ url_for('carregar') }}">Carregar Imagem Aleatória</a>
+    </div>
+</body>
+</html>
