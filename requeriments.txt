@@ -1,7 +1,13 @@
-streamlit
-streamlit-drawable-canvas
-Pillow
-streamlit-image-coordinates
-torch
-torchvision
-ultralytics
+# Streamlit e UI
+streamlit==1.28.0
+streamlit-image-coordinates==0.1.6
+
+# Manipulação de imagens
+Pillow==10.0.0
+opencv-python-headless==4.8.1.78
+numpy==1.25.2
+
+# IA / modelo YOLO
+torch==2.1.0
+torchvision==0.16.1
+ultralytics==8.1.2
