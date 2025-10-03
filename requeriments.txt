@@ -1,14 +1,5 @@
 streamlit
-git+https://github.com/andfanilo/streamlit-drawable-canvas.git
+streamlit-drawable-canvas
 Pillow
 streamlit-image-coordinates
-opencv-python-headless
-numpy
 
-# PyTorch oficial
-torch==2.2.0+cpu
-torchvision==0.17.1+cpu
--f https://download.pytorch.org/whl/torch_stable.html
-
-# YOLOv8
-ultralytics
