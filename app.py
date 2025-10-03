@@ -9,7 +9,7 @@ def main():
     uploaded_file = st.file_uploader("Carregue uma imagem", type=["png", "jpg", "jpeg"])
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
-        st.image(uploaded_file, caption="Imagem carregada", use_container_width=True)
+        st.image(image, caption="Imagem carregada", use_container_width=True)
 
 
         # Criar canvas para o usuário desenhar
