@@ -1,23 +1,35 @@
 import streamlit as st
+from ultralytics import YOLO
 from PIL import Image
-from analise import analisar_imagem, recortar_regiao
 
-def main():
-    st.title("Sistema de Apoio ao Diagnóstico")
+# carregue seu modelo treinado (ajuste o caminho do .pt)
+model = YOLO("D:/backuptcc/projeto_tcc/modelo/best.pt")
 
-    uploaded_file = st.file_uploader("Carregue uma imagem", type=["png", "jpg", "jpeg"])
-    if uploaded_file:
-        img = Image.open(uploaded_file)
-        st.image(img, caption="Imagem carregada", use_container_width=True)
+st.title("Sistema de Apoio ao Diagnóstico")
+st.write("Carregue uma imagem e o modelo irá detectar possíveis anomalias.")
 
-        coords_input = st.text_input("Digite coords x1,y1,x2,y2", "0,0,100,100")
-        coords = tuple(map(int, coords_input.split(",")))
-        recorte = recortar_regiao(img, coords)
-        st.image(recorte, caption="Região selecionada")
+# Upload de imagem
+uploaded_file = st.file_uploader("Carregar imagem", type=["png", "jpg", "jpeg"])
 
-        if st.button("Analisar"):
-            resultado = analisar_imagem(recorte)
-            st.success(f"Resultado: {resultado}")
+if uploaded_file is not None:
+    # abrir a imagem
+    img = Image.open(uploaded_file).convert("RGB")
+    st.image(img, caption="Imagem Original", use_container_width=True)
 
-if __name__ == "__main__":
-    main()
+    # botão para rodar a análise
+    if st.button("Analisar"):
+        with st.spinner("Analisando a imagem..."):
+            # roda o modelo
+            results = model.predict(img)
+
+            # mostra resultados
+            for r in results:
+                st.write(f"**Detecções:** {len(r.boxes)}")
+                for box in r.boxes:
+                    cls = int(box.cls[0])
+                    conf = float(box.conf[0])
+                    st.write(f"- {model.names[cls]} ({conf:.2f})")
+
+                # renderiza imagem anotada
+                annotated = r.plot()  # numpy array com caixas desenhadas
+                st.image(annotated, caption="Detecções do Modelo", use_container_width=True)
